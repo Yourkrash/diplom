@@ -1,5 +1,10 @@
 %% Работа с русским языком
 \usepackage{cmap}			 % поиск в PDF
+%% Векторные (Type 1) шрифты вместо растровых — документ выглядит чётче.
+%% Шрифты cm-super должны быть установлены в систему (tlmgr install cm-super);
+%% при активной кодировке T2A они подключаются автоматически. lmodern даёт
+%% векторную Unicode-реализацию Computer Modern (аналог cm-unicode).
+\usepackage{lmodern}
 \usepackage{mathtext} 		 % русские буквы в формулах
 \usepackage[T2A]{fontenc}	 % кодировка
 \usepackage[utf8]{inputenc}	 % кодировка исходного текста
@@ -61,12 +66,33 @@
 %% Красная строка
 \setlength{\parindent}{1.25cm}
 
-%% Интервалы
-\linespread{1}
+%% Интервалы (полуторный межстрочный интервал по требованиям к ВКР)
+\usepackage{setspace}
+\onehalfspacing
+
+%% Оформление заголовков: 14 пт, по центру (главы и параграфы)
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\fontsize{14}{17}\bfseries\centering}{\thesection}{0.5em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{14}{17}\bfseries\centering}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{14}{17}\bfseries}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{12pt}{8pt}
+\titlespacing*{\subsection}{0pt}{10pt}{6pt}
+\titlespacing*{\subsubsection}{\parindent}{8pt}{4pt}
+
+%% Глубина нумерации и содержания
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
 
 %% TikZ
 \usepackage{tikz}
-\usetikzlibrary{graphs,graphs.standard}
+\usetikzlibrary{graphs,graphs.standard,arrows.meta,positioning,fit,backgrounds,calc}
+
+%% Графики (анализ слоёв, кривые обучения)
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 %% Верхний колонтитул
 \usepackage{fancyhdr}

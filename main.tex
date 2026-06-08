@@ -30,6 +30,10 @@
     \tableofcontents{}
     \newpage
 
+    %% обозначения и сокращения
+    \input{parts/Abbreviations.tex}
+    \newpage
+
     % \fontsize{14}{16}\selectfont
     \input{parts/Chapter0.tex} %% Введение
     \newpage
@@ -44,11 +48,13 @@
     \input{parts/Chapter5.tex} %% Заключение
     \newpage
 
-    %% НЕ ТРОГАЙТЕ!!!
+    %% список использованных источников
     \nocite{*}
+    \renewcommand{\refname}{Список использованных источников}
+    \addcontentsline{toc}{section}{Список использованных источников}
     \bibliography{references}
 
-    %% в зависимости от надобности подключаем раздел "Приложение"
-    % \newpage
-    % \input{Appendix.tex}
+    %% раздел "Приложение"
+    \newpage
+    \input{parts/Appendix.tex}
 \end{document}
