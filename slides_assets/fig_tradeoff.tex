@@ -1,0 +1,28 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    width=13cm, height=8cm,
+    xlabel={RTF (меньше --- быстрее)}, ylabel={PESQ},
+    xmin=0, xmax=0.18, ymin=2.6, ymax=3.05,
+    grid=both, grid style={black!12},
+    nodes near coords, point meta=explicit symbolic,
+    every node near coord/.append style={font=\small, anchor=south},
+    tick label style={font=\small}, label style={font=\large}]
+\addplot[only marks, mark=*, mark size=3pt] coordinates {
+    (0.031,2.71) [K1]
+    (0.142,2.78) [K2]
+    (0.034,2.94) [K3]
+    (0.149,2.97) [K4]};
+\end{axis}
+\end{tikzpicture}
+\end{document}

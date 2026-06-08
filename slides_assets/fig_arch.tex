@@ -1,0 +1,46 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}[
+    >={Stealth[length=2.4mm]},
+    lyr/.style={draw, minimum width=3.6cm, minimum height=0.8cm,
+        align=center, font=\small, fill=black!6},
+    sel/.style={lyr, fill=black!16, very thick},
+    adp/.style={draw, rounded corners=2pt, minimum width=1.5cm,
+        minimum height=0.7cm, align=center, font=\small, fill=black!22},
+    io/.style={align=center, font=\small}]
+    \node (cnn) [lyr] {Свёрточный фронтенд (CNN)};
+    \node (l1)  [lyr, above=1.1cm of cnn] {Трансформерный слой $1$};
+    \node (ld)  [above=0.6cm of l1, font=\large] {$\vdots$};
+    \node (le)  [sel, above=0.6cm of ld] {Трансформерный слой $\ell$};
+    \node (in) [io, below=0.85cm of cnn] {Искажённый сигнал $y$};
+    \draw[->] (in) -- (cnn);
+    \draw[->] (cnn) -- (l1);
+    \draw[->] (l1) -- (ld);
+    \draw[->] (ld) -- (le);
+    \node (a1) [adp, right=1.9cm of l1] {Адаптер};
+    \node (ae) [adp, right=1.9cm of le] {Адаптер};
+    \draw[->] (l1.east) -- (a1.west);
+    \draw[->] (le.east) -- (ae.west);
+    \begin{scope}[on background layer]
+        \node (encbox) [draw, dashed, rounded corners,
+            fit=(cnn)(le)(a1)(ae), inner sep=9pt] {};
+    \end{scope}
+    \node [font=\small, anchor=south] at (encbox.north)
+        {Замороженный энкодер $E$ + обучаемые адаптеры $G_\phi$};
+    \node (voc) [draw, rounded corners, fill=black!16, minimum width=2.8cm,
+        minimum height=1.1cm, align=center, font=\small,
+        right=2.6cm of ae] {Вокодер $V_\psi$\\(HiFi-GAN / WaveFit)};
+    \node (res) [io, below=1.1cm of voc] {Чистый\\сигнал $\hat{x}$};
+    \draw[->] (ae.east) -- node[above, font=\footnotesize] {$\hat{z}^{(\ell)}$} (voc.west);
+    \draw[->] (voc) -- (res);
+\end{tikzpicture}
+\end{document}

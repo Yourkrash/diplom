@@ -1,0 +1,29 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}[
+    node distance=0.9cm and 1.0cm,
+    block/.style={draw, rounded corners, minimum height=1.1cm,
+        minimum width=2.4cm, align=center, font=\small},
+    frozen/.style={block, fill=black!6},
+    trained/.style={block, fill=black!16},
+    >={Stealth[length=2.5mm]}]
+    \node (in) [align=center, font=\small] {Искажённый\\сигнал $y$};
+    \node (enc) [frozen, right=of in] {SSL-энкодер\\$E$ (заморожен)};
+    \node (fc)  [trained, right=of enc] {Очиститель\\признаков $G_\phi$};
+    \node (voc) [trained, right=of fc] {Вокодер\\$V_\psi$};
+    \node (out) [align=center, font=\small, right=of voc] {Чистый\\сигнал $\hat{x}$};
+    \draw[->] (in) -- (enc);
+    \draw[->] (enc) -- node[above, font=\scriptsize] {$z$} (fc);
+    \draw[->] (fc) -- node[above, font=\scriptsize] {$\hat{z}$} (voc);
+    \draw[->] (voc) -- (out);
+\end{tikzpicture}
+\end{document}

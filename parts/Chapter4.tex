@@ -32,24 +32,31 @@
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[
-        mod/.style={draw, rounded corners, minimum width=2.4cm,
-            minimum height=0.8cm, align=center, font=\scriptsize, fill=black!6},
-        >={Stealth[length=2.2mm]}, node distance=0.6cm and 0.7cm]
-        \node (data) [mod] {\texttt{data}};
-        \node (enc) [mod, right=of data] {\texttt{encoder}};
-        \node (cln) [mod, right=of enc] {\texttt{cleaner}};
-        \node (voc) [mod, right=of cln] {\texttt{vocoder}};
-        \node (tr) [mod, below=of enc] {\texttt{train}};
-        \node (ev) [mod, below=of cln] {\texttt{eval}};
+        >={Stealth[length=2.4mm]},
+        mod/.style={draw, rounded corners, minimum width=2.2cm,
+            minimum height=1.0cm, align=center, font=\scriptsize, fill=black!6},
+        ctl/.style={draw, rounded corners, align=center, font=\scriptsize,
+            fill=black!14, minimum height=0.9cm}]
+        % --- основной поток данных (слева направо) ---
+        \node (data) [mod] {\texttt{data}\\\tiny аугментация};
+        \node (enc)  [mod, right=0.9cm of data] {\texttt{encoder}\\\tiny SSL, заморож.};
+        \node (cln)  [mod, right=0.9cm of enc]  {\texttt{cleaner}\\\tiny адаптеры};
+        \node (voc)  [mod, right=0.9cm of cln]  {\texttt{vocoder}};
+        \node (ev)   [mod, right=0.9cm of voc]  {\texttt{eval}\\\tiny метрики};
         \draw[->] (data) -- (enc);
         \draw[->] (enc) -- (cln);
         \draw[->] (cln) -- (voc);
-        \draw[->] (tr) -- (cln);
-        \draw[->] (tr) -- (voc);
-        \draw[->] (voc) |- (ev);
-        \draw[->] (data) |- (tr);
+        \draw[->] (voc) -- (ev);
+        % --- управляющий модуль обучения (отдельная строка) ---
+        \node (tr) [ctl, below=1.1cm of $(cln)!0.5!(voc)$,
+            minimum width=5.2cm] {\texttt{train} --- цикл обучения\\
+            \tiny (оптимизация адаптеров и вокодера)};
+        \draw[->, dashed] (tr.north -| cln) -- (cln.south);
+        \draw[->, dashed] (tr.north -| voc) -- (voc.south);
+        \draw[->, dashed] (data.south) |- (tr.west);
     \end{tikzpicture}
-    \caption{Модульная структура программного комплекса}
+    \caption{Модульная структура программного комплекса: верхний ряд ---
+        поток обработки сигнала, нижний модуль --- управление обучением}
     \label{fig:codearch}
 \end{figure}
 

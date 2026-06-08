@@ -1,0 +1,31 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    width=14cm, height=8cm,
+    xlabel={Номер слоя $\ell$}, ylabel={PESQ (валидация)},
+    xmin=0.5, xmax=12.5, ymin=2.2, ymax=3.1,
+    xtick={1,2,3,4,5,6,7,8,9,10,11,12},
+    legend pos=south west, legend cell align=left,
+    grid=both, grid style={black!12}, tick label style={font=\small},
+    label style={font=\large}]
+\addplot[mark=*, thick] coordinates {
+    (1,2.39)(2,2.57)(3,2.65)(4,2.82)(5,2.84)(6,2.93)(7,2.95)(8,2.87)
+    (9,2.85)(10,2.71)(11,2.69)(12,2.55)};
+\addlegendentry{WavLM Base+}
+\addplot[mark=square*, thick, dashed] coordinates {
+    (1,2.36)(2,2.44)(3,2.61)(4,2.66)(5,2.79)(6,2.82)(7,2.78)(8,2.76)
+    (9,2.64)(10,2.62)(11,2.50)(12,2.47)};
+\addlegendentry{HuBERT Base}
+\end{axis}
+\end{tikzpicture}
+\end{document}
